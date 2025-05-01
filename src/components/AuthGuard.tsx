@@ -1,8 +1,7 @@
-
-import { ReactNode, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { Badge } from '@/components/ui/badge';
+import { ReactNode, useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { Badge } from "@/components/ui/badge";
 
 const AuthGuard = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -16,8 +15,8 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-3 justify-center items-center min-h-screen bg-eigengram-background">
-        <div className="w-8 h-8 border-4 border-eigengram-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex flex-col gap-3 justify-center items-center min-h-screen bg-VitalCarePlatform-background">
+        <div className="w-8 h-8 border-4 border-VitalCarePlatform-primary border-t-transparent rounded-full animate-spin"></div>
         <Badge>Authenticating...</Badge>
       </div>
     );

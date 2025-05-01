@@ -1,14 +1,20 @@
-
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { InfoIcon } from "lucide-react";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 
 interface LocationState {
   from?: {
@@ -30,25 +36,26 @@ declare global {
   }
 }
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [googleSignInAvailable, setGoogleSignInAvailable] = useState(false);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const { login, googleLogin, isAuthenticated } = useAuth();
-  
-  const from = (location.state as LocationState)?.from?.pathname || '/dashboard';
+
+  const from =
+    (location.state as LocationState)?.from?.pathname || "/dashboard";
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      console.log('User is already authenticated, redirecting to:', from);
+      console.log("User is already authenticated, redirecting to:", from);
       navigate(from);
     }
   }, [isAuthenticated, navigate, from]);
@@ -61,19 +68,19 @@ const SignIn = () => {
           client_id: GOOGLE_CLIENT_ID,
           callback: handleGoogleSignIn,
         });
-        
-        const googleButton = document.getElementById('google-signin');
+
+        const googleButton = document.getElementById("google-signin");
         if (googleButton) {
           window.google.accounts.id.renderButton(googleButton, {
-            theme: 'outline',
-            size: 'large',
+            theme: "outline",
+            size: "large",
             width: 280,
-            text: 'signin_with',
+            text: "signin_with",
           });
         }
         setGoogleSignInAvailable(true);
       } catch (error) {
-        console.error('Failed to initialize Google Sign-In:', error);
+        console.error("Failed to initialize Google Sign-In:", error);
         setGoogleSignInAvailable(false);
       }
     } else {
@@ -94,60 +101,64 @@ const SignIn = () => {
   };
 
   const validateForm = () => {
-    const newErrors = { email: '', password: '' };
+    const newErrors = { email: "", password: "" };
     let isValid = true;
-    
+
     if (!email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
       isValid = false;
     }
-    
+
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
       isValid = false;
     } else if (password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+      newErrors.password = "Password must be at least 8 characters";
       isValid = false;
     }
-    
+
     setErrors(newErrors);
     return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
     try {
-      console.log('Attempting to login with email:', email);
+      console.log("Attempting to login with email:", email);
       const success = await login(email, password);
       if (success) {
-        console.log('Login successful, redirecting to:', from);
+        console.log("Login successful, redirecting to:", from);
         navigate(from);
       } else {
-        console.log('Login failed');
+        console.log("Login failed");
       }
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error('An unexpected error occurred. Please try again.');
+      console.error("Login error:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-eigengram-background flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-VitalCarePlatform-background flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gradient">Eigengram</h1>
-          <p className="text-eigengram-muted mt-2">Healthcare AI Platform</p>
+          <h1 className="text-3xl font-bold text-gradient">
+            VitalCarePlatform
+          </h1>
+          <p className="text-VitalCarePlatform-muted mt-2">
+            Healthcare AI Platform
+          </p>
         </div>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
@@ -171,13 +182,13 @@ const SignIn = () => {
                   <p className="text-sm text-red-500">{errors.email}</p>
                 )}
               </div>
-              
+
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link 
-                    to="/forgot-password" 
-                    className="text-sm text-eigengram-primary hover:underline"
+                  <Link
+                    to="/forgot-password"
+                    className="text-sm text-VitalCarePlatform-primary hover:underline"
                   >
                     Forgot password?
                   </Link>
@@ -198,19 +209,19 @@ const SignIn = () => {
               <div className="py-2 px-3 bg-blue-50 border border-blue-100 rounded-md flex items-start gap-2">
                 <InfoIcon className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
                 <div className="text-sm text-blue-700">
-                  <p>For testing, use a strong password with letters and numbers.</p>
-                  <p className="mt-1">Example: <code>Password123!</code></p>
+                  <p>
+                    For testing, use a strong password with letters and numbers.
+                  </p>
+                  <p className="mt-1">
+                    Example: <code>Password123!</code>
+                  </p>
                 </div>
               </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isLoading}
-              >
+
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign in"}
               </Button>
-              
+
               {googleSignInAvailable && (
                 <>
                   <div className="relative my-4">
@@ -223,20 +234,20 @@ const SignIn = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-center">
                     <div id="google-signin"></div>
                   </div>
                 </>
               )}
             </CardContent>
-            
+
             <CardFooter className="flex flex-col">
               <div className="text-center text-sm">
                 Don't have an account?{" "}
-                <Link 
-                  to="/sign-up" 
-                  className="text-eigengram-primary hover:underline"
+                <Link
+                  to="/sign-up"
+                  className="text-VitalCarePlatform-primary hover:underline"
                 >
                   Sign up
                 </Link>

@@ -1,2 +1,2 @@
 
-# Services app for Eigengram Healthcare Platform
+# Services app for VitalCarePlatform Healthcare Platform

@@ -1,7 +1,6 @@
-
-import { createContext, useContext, useState, useEffect } from 'react';
-import { toast } from 'sonner';
-import { authService } from '../services/api';
+import { createContext, useContext, useState, useEffect } from "react";
+import { toast } from "sonner";
+import { authService } from "../services/api";
 
 const AuthContext = createContext();
 
@@ -15,12 +14,12 @@ export const AuthProvider = ({ children }) => {
       try {
         setIsLoading(true);
         // Check if we have a token
-        const token = localStorage.getItem('eigengramAccessToken');
-        
+        const token = localStorage.getItem("VitalCarePlatformAccessToken");
+
         if (token) {
           // Try to get user data using the token
           const { success, data } = await authService.getCurrentUser();
-          
+
           if (success && data) {
             setUser(data);
           } else {
@@ -29,7 +28,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error('Failed to load user:', error);
+        console.error("Failed to load user:", error);
       } finally {
         setIsLoading(false);
       }
@@ -41,28 +40,28 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setIsLoading(true);
-      
+
       const { success, message } = await authService.login(email, password);
-      
+
       if (success) {
         // Load user data after login
         const userResponse = await authService.getCurrentUser();
-        
+
         if (userResponse.success && userResponse.data) {
           setUser(userResponse.data);
-          toast.success('Successfully signed in');
+          toast.success("Successfully signed in");
           return true;
         } else {
-          toast.error('Failed to load user data');
+          toast.error("Failed to load user data");
           return false;
         }
       }
-      
-      toast.error(message || 'Invalid email or password');
+
+      toast.error(message || "Invalid email or password");
       return false;
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error('An error occurred during sign in');
+      console.error("Login error:", error);
+      toast.error("An error occurred during sign in");
       return false;
     } finally {
       setIsLoading(false);
@@ -72,28 +71,28 @@ export const AuthProvider = ({ children }) => {
   const googleLogin = async (token) => {
     try {
       setIsLoading(true);
-      
+
       const { success, message } = await authService.googleLogin(token);
-      
+
       if (success) {
         // Load user data after login
         const userResponse = await authService.getCurrentUser();
-        
+
         if (userResponse.success && userResponse.data) {
           setUser(userResponse.data);
-          toast.success('Successfully signed in with Google');
+          toast.success("Successfully signed in with Google");
           return true;
         } else {
-          toast.error('Failed to load user data');
+          toast.error("Failed to load user data");
           return false;
         }
       }
-      
-      toast.error(message || 'Failed to sign in with Google');
+
+      toast.error(message || "Failed to sign in with Google");
       return false;
     } catch (error) {
-      console.error('Google login error:', error);
-      toast.error('An error occurred during Google sign in');
+      console.error("Google login error:", error);
+      toast.error("An error occurred during Google sign in");
       return false;
     } finally {
       setIsLoading(false);
@@ -103,19 +102,21 @@ export const AuthProvider = ({ children }) => {
   const signUp = async (userData) => {
     try {
       setIsLoading(true);
-      
+
       const { success, message } = await authService.signUp(userData);
-      
+
       if (success) {
-        toast.success('Account created! Please check your email to verify your account before logging in.');
+        toast.success(
+          "Account created! Please check your email to verify your account before logging in."
+        );
         return true;
       }
-      
-      toast.error(message || 'Registration failed');
+
+      toast.error(message || "Registration failed");
       return false;
     } catch (error) {
-      console.error('Signup error:', error);
-      toast.error('An error occurred during sign up');
+      console.error("Signup error:", error);
+      toast.error("An error occurred during sign up");
       return false;
     } finally {
       setIsLoading(false);
@@ -125,37 +126,40 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     authService.logout();
-    toast.success('Successfully signed out');
+    toast.success("Successfully signed out");
   };
 
   const updateUser = (userData) => {
     if (user) {
-      authService.updateProfile(userData)
+      authService
+        .updateProfile(userData)
         .then(({ success, data, message }) => {
           if (success && data) {
             setUser({ ...user, ...data });
-            toast.success('Profile updated successfully');
+            toast.success("Profile updated successfully");
           } else {
-            toast.error(message || 'Failed to update profile');
+            toast.error(message || "Failed to update profile");
           }
         })
         .catch(() => {
-          toast.error('An error occurred while updating your profile');
+          toast.error("An error occurred while updating your profile");
         });
     }
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isLoading, 
-      isAuthenticated: !!user,
-      login, 
-      signUp,
-      logout, 
-      updateUser,
-      googleLogin
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        isAuthenticated: !!user,
+        login,
+        signUp,
+        logout,
+        updateUser,
+        googleLogin,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -164,7 +168,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

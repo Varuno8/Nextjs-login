@@ -2,15 +2,21 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PackagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
   DialogClose,
-  DialogDescription 
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +37,7 @@ const AdminDashboard = () => {
     price: "",
     category: "",
     imageUrl: "",
-    awsModelUrl: ""
+    awsModelUrl: "",
   });
 
   useEffect(() => {
@@ -46,35 +52,37 @@ const AdminDashboard = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchServices();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setNewService(prev => ({ ...prev, [name]: value }));
+    setNewService((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAddService = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       setIsSubmitting(true);
-      
+
       // Convert price to number
       const serviceData = {
         ...newService,
-        price: parseFloat(newService.price)
+        price: parseFloat(newService.price),
       };
-      
+
       console.log("Calling servicesApi.create with:", serviceData);
       const response = await servicesApi.create(serviceData);
       console.log("Response from servicesApi.create:", response);
-      
+
       if (response && response.success) {
         toast.success("Service added successfully");
         setIsAddDialogOpen(false);
-        
+
         // Add the new service to the state with the returned ID and required properties
         if (response.data) {
           const newServiceData: Service = {
@@ -87,12 +95,12 @@ const AdminDashboard = () => {
             awsModelUrl: response.data.awsModelUrl || "",
             isActive: response.data.isActive || true,
             createdAt: response.data.createdAt || new Date().toISOString(),
-            updatedAt: response.data.updatedAt || new Date().toISOString()
+            updatedAt: response.data.updatedAt || new Date().toISOString(),
           };
-          
-          setServices(prevServices => [newServiceData, ...prevServices]);
+
+          setServices((prevServices) => [newServiceData, ...prevServices]);
         }
-        
+
         // Reset form
         setNewService({
           name: "",
@@ -100,7 +108,7 @@ const AdminDashboard = () => {
           price: "",
           category: "",
           imageUrl: "",
-          awsModelUrl: ""
+          awsModelUrl: "",
         });
       } else {
         toast.error(response?.message || "Failed to add service");
@@ -122,7 +130,7 @@ const AdminDashboard = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-eigengram-muted mt-1">
+          <p className="text-VitalCarePlatform-muted mt-1">
             Manage services and users
           </p>
         </div>
@@ -137,7 +145,7 @@ const AdminDashboard = () => {
             <p className="text-3xl font-bold">{services.length}</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle>Total Users</CardTitle>
@@ -146,7 +154,7 @@ const AdminDashboard = () => {
             <p className="text-3xl font-bold">3</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle>Pending Subscriptions</CardTitle>
@@ -170,26 +178,28 @@ const AdminDashboard = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
-            <Card 
-              key={service.id} 
+            <Card
+              key={service.id}
               className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
               onClick={() => handleCardClick(service.id)}
             >
               {service.imageUrl && (
                 <div className="aspect-video w-full overflow-hidden">
-                  <img 
-                    src={service.imageUrl} 
-                    alt={service.name} 
+                  <img
+                    src={service.imageUrl}
+                    alt={service.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
               )}
               <CardHeader>
                 <CardTitle className="text-xl">{service.name}</CardTitle>
-                <CardDescription>${service.price.toFixed(2)} / month</CardDescription>
+                <CardDescription>
+                  ${service.price.toFixed(2)} / month
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-eigengram-foreground/80 line-clamp-2">
+                <p className="text-sm text-VitalCarePlatform-foreground/80 line-clamp-2">
                   {service.description}
                 </p>
               </CardContent>
@@ -199,7 +209,7 @@ const AdminDashboard = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <Card className="md:col-span-3 bg-eigengram-primary/5">
+        <Card className="md:col-span-3 bg-VitalCarePlatform-primary/5">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>

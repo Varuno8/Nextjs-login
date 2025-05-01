@@ -1,13 +1,12 @@
-
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,16 +18,20 @@ interface ServiceCardProps {
   dashboard?: boolean;
 }
 
-const ServiceCard = ({ service, subscribed, dashboard = false }: ServiceCardProps) => {
+const ServiceCard = ({
+  service,
+  subscribed,
+  dashboard = false,
+}: ServiceCardProps) => {
   const { id, name, description, price, imageUrl } = service;
-  
+
   return (
     <Card className="overflow-hidden flex flex-col h-full">
       {imageUrl && (
         <div className="aspect-video w-full overflow-hidden">
-          <img 
-            src={imageUrl} 
-            alt={name} 
+          <img
+            src={imageUrl}
+            alt={name}
             className="w-full h-full object-cover transition-transform hover:scale-105"
           />
         </div>
@@ -43,13 +46,20 @@ const ServiceCard = ({ service, subscribed, dashboard = false }: ServiceCardProp
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
-        <p className="text-sm text-eigengram-foreground/80 line-clamp-3">
+        <p className="text-sm text-VitalCarePlatform-foreground/80 line-clamp-3">
           {description}
         </p>
       </CardContent>
       <CardFooter className="pt-2">
-        <Button asChild className="w-full" variant={subscribed ? "outline" : "default"}>
-          <Link to={dashboard ? `/dashboard/services/${id}` : `/services/${id}`} className="flex items-center justify-center">
+        <Button
+          asChild
+          className="w-full"
+          variant={subscribed ? "outline" : "default"}
+        >
+          <Link
+            to={dashboard ? `/dashboard/services/${id}` : `/services/${id}`}
+            className="flex items-center justify-center"
+          >
             View Details
             <ArrowRight size={16} className="ml-2" />
           </Link>

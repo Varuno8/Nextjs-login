@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -11,7 +10,7 @@ interface SubscriptionWithDetails {
   id: string;
   userId: string;
   serviceId: string;
-  status: 'PENDING' | 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
+  status: "PENDING" | "ACTIVE" | "INACTIVE" | "CANCELLED";
   startDate: string;
   endDate?: string;
   createdAt: string;
@@ -22,7 +21,9 @@ interface SubscriptionWithDetails {
 
 const AdminSubscriptions = () => {
   const navigate = useNavigate();
-  const [subscriptions, setSubscriptions] = useState<SubscriptionWithDetails[]>([]);
+  const [subscriptions, setSubscriptions] = useState<SubscriptionWithDetails[]>(
+    []
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
 
@@ -38,7 +39,7 @@ const AdminSubscriptions = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchSubscriptions();
   }, []);
 
@@ -46,18 +47,19 @@ const AdminSubscriptions = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
-  const handleUpdateStatus = async (id: string, newStatus: 'ACTIVE' | 'INACTIVE' | 'CANCELLED') => {
+  const handleUpdateStatus = async (
+    id: string,
+    newStatus: "ACTIVE" | "INACTIVE" | "CANCELLED"
+  ) => {
     try {
       setProcessingId(id);
       await updateSubscriptionStatus(id, newStatus);
-      
+
       // Update local state
-      setSubscriptions(prev => 
-        prev.map(sub => 
-          sub.id === id ? { ...sub, status: newStatus } : sub
-        )
+      setSubscriptions((prev) =>
+        prev.map((sub) => (sub.id === id ? { ...sub, status: newStatus } : sub))
       );
-      
+
       toast.success(`Subscription ${newStatus.toLowerCase()} successfully`);
     } catch (error) {
       console.error(`Error updating subscription status:`, error);
@@ -73,10 +75,12 @@ const AdminSubscriptions = () => {
         <ArrowLeft size={16} className="mr-2" />
         Back
       </Button>
-      
+
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Subscription Requests</h1>
-        <p className="text-eigengram-muted mt-1">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Subscription Requests
+        </h1>
+        <p className="text-VitalCarePlatform-muted mt-1">
           Manage user subscription requests
         </p>
       </div>
@@ -98,59 +102,81 @@ const AdminSubscriptions = () => {
               </thead>
               <tbody>
                 {subscriptions.map((subscription) => (
-                  <tr key={subscription.id} className="border-b hover:bg-eigengram-background/50">
-                    <td className="p-4">{subscription.userName || "Unknown"}</td>
-                    <td className="p-4">{subscription.serviceName || "Unknown"}</td>
+                  <tr
+                    key={subscription.id}
+                    className="border-b hover:bg-VitalCarePlatform-background/50"
+                  >
                     <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        subscription.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                        subscription.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                        subscription.status === 'INACTIVE' ? 'bg-gray-100 text-gray-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
+                      {subscription.userName || "Unknown"}
+                    </td>
+                    <td className="p-4">
+                      {subscription.serviceName || "Unknown"}
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${
+                          subscription.status === "ACTIVE"
+                            ? "bg-green-100 text-green-800"
+                            : subscription.status === "PENDING"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : subscription.status === "INACTIVE"
+                            ? "bg-gray-100 text-gray-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
                         {subscription.status}
                       </span>
                     </td>
-                    <td className="p-4">{formatDate(subscription.startDate)}</td>
+                    <td className="p-4">
+                      {formatDate(subscription.startDate)}
+                    </td>
                     <td className="p-4 space-x-2">
-                      {subscription.status === 'PENDING' && (
+                      {subscription.status === "PENDING" && (
                         <>
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             variant="default"
                             disabled={processingId === subscription.id}
-                            onClick={() => handleUpdateStatus(subscription.id, 'ACTIVE')}
+                            onClick={() =>
+                              handleUpdateStatus(subscription.id, "ACTIVE")
+                            }
                           >
                             Approve
                           </Button>
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             variant="outline"
                             disabled={processingId === subscription.id}
-                            onClick={() => handleUpdateStatus(subscription.id, 'CANCELLED')}
+                            onClick={() =>
+                              handleUpdateStatus(subscription.id, "CANCELLED")
+                            }
                           >
                             Reject
                           </Button>
                         </>
                       )}
-                      
-                      {subscription.status === 'ACTIVE' && (
-                        <Button 
-                          size="sm" 
+
+                      {subscription.status === "ACTIVE" && (
+                        <Button
+                          size="sm"
                           variant="secondary"
                           disabled={processingId === subscription.id}
-                          onClick={() => handleUpdateStatus(subscription.id, 'INACTIVE')}
+                          onClick={() =>
+                            handleUpdateStatus(subscription.id, "INACTIVE")
+                          }
                         >
                           Deactivate
                         </Button>
                       )}
-                      
-                      {subscription.status === 'INACTIVE' && (
-                        <Button 
-                          size="sm" 
+
+                      {subscription.status === "INACTIVE" && (
+                        <Button
+                          size="sm"
                           variant="default"
                           disabled={processingId === subscription.id}
-                          onClick={() => handleUpdateStatus(subscription.id, 'ACTIVE')}
+                          onClick={() =>
+                            handleUpdateStatus(subscription.id, "ACTIVE")
+                          }
                         >
                           Reactivate
                         </Button>

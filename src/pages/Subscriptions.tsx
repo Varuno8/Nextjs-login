@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { subscriptionsApi } from "@/services/api";
@@ -17,13 +16,19 @@ const Subscriptions = () => {
         setIsLoading(true);
         if (user?.id) {
           // Check if user ID is a valid UUID format
-          if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(user.id)) {
+          if (
+            !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+              user.id
+            )
+          ) {
             console.error("Invalid UUID format for user ID:", user.id);
-            toast.error("Invalid user ID format. Please try signing out and back in.");
+            toast.error(
+              "Invalid user ID format. Please try signing out and back in."
+            );
             setIsLoading(false);
             return;
           }
-          
+
           const response = await subscriptionsApi.getUserSubscriptions(user.id);
           if (response.success && Array.isArray(response.data)) {
             setSubscriptions(response.data);
@@ -39,18 +44,20 @@ const Subscriptions = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchSubscriptions();
   }, [user?.id]);
 
   // Filter active subscriptions
-  const activeSubscriptions = subscriptions.filter(sub => sub.status === "ACTIVE");
+  const activeSubscriptions = subscriptions.filter(
+    (sub) => sub.status === "ACTIVE"
+  );
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">My Subscriptions</h1>
-        <p className="text-eigengram-muted mt-1">
+        <p className="text-VitalCarePlatform-muted mt-1">
           Manage and access your subscribed services
         </p>
       </div>
@@ -71,7 +78,9 @@ const Subscriptions = () => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-eigengram-muted">You don't have any active subscriptions yet.</p>
+          <p className="text-VitalCarePlatform-muted">
+            You don't have any active subscriptions yet.
+          </p>
         </div>
       )}
     </div>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -23,7 +22,7 @@ const AdminUsers = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchUsers();
   }, []);
 
@@ -37,10 +36,10 @@ const AdminUsers = () => {
         <ArrowLeft size={16} className="mr-2" />
         Back
       </Button>
-      
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Users</h1>
-        <p className="text-eigengram-muted mt-1">
+        <p className="text-VitalCarePlatform-muted mt-1">
           Manage user accounts ({users.length})
         </p>
       </div>
@@ -63,14 +62,21 @@ const AdminUsers = () => {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="border-b hover:bg-eigengram-background/50">
+                  <tr
+                    key={user.id}
+                    className="border-b hover:bg-VitalCarePlatform-background/50"
+                  >
                     <td className="p-4">{user.name || user.username}</td>
                     <td className="p-4">{user.email}</td>
                     <td className="p-4">{user.phoneNumber || "—"}</td>
                     <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        user.role === "ADMIN" ? "bg-eigengram-accent/20 text-eigengram-accent" : "bg-eigengram-primary/20 text-eigengram-primary"
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${
+                          user.role === "ADMIN"
+                            ? "bg-VitalCarePlatform-accent/20 text-VitalCarePlatform-accent"
+                            : "bg-VitalCarePlatform-primary/20 text-VitalCarePlatform-primary"
+                        }`}
+                      >
                         {user.role}
                       </span>
                     </td>

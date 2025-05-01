@@ -1,9 +1,13 @@
-
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { getServices, getUserSubscriptions, Service, Subscription } from "@/lib/mock-data";
+import {
+  getServices,
+  getUserSubscriptions,
+  Service,
+  Subscription,
+} from "@/lib/mock-data";
 import ServiceGrid from "@/components/ServiceGrid";
 import { Search } from "lucide-react";
 
@@ -22,9 +26,9 @@ const Services = () => {
         if (user?.id) {
           const [servicesData, subscriptionsData] = await Promise.all([
             getServices(),
-            getUserSubscriptions(user.id)
+            getUserSubscriptions(user.id),
           ]);
-          
+
           setServices(servicesData);
           setSubscriptions(subscriptionsData);
           setFilteredServices(servicesData);
@@ -35,7 +39,7 @@ const Services = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchData();
   }, [user?.id]);
 
@@ -50,17 +54,18 @@ const Services = () => {
       setFilteredServices(services);
       return;
     }
-    
-    const filtered = services.filter(service => 
-      service.name.toLowerCase().includes(query) || 
-      service.description.toLowerCase().includes(query)
+
+    const filtered = services.filter(
+      (service) =>
+        service.name.toLowerCase().includes(query) ||
+        service.description.toLowerCase().includes(query)
     );
-    
+
     setFilteredServices(filtered);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -69,14 +74,14 @@ const Services = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Search Services</h1>
-        <p className="text-eigengram-muted mt-1">
+        <p className="text-VitalCarePlatform-muted mt-1">
           Find and subscribe to healthcare AI services
         </p>
       </div>
 
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-eigengram-muted h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-VitalCarePlatform-muted h-4 w-4" />
           <Input
             placeholder="Search services..."
             className="pl-9"
@@ -91,12 +96,12 @@ const Services = () => {
       {isLoading ? (
         <div className="text-center py-12">Loading services...</div>
       ) : (
-        <ServiceGrid 
+        <ServiceGrid
           services={filteredServices}
           subscriptionStatus={subscriptionStatus}
           dashboard={true}
           emptyMessage={
-            searchQuery 
+            searchQuery
               ? `No services found matching "${searchQuery}"`
               : "No services available at this time."
           }

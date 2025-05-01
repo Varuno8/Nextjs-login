@@ -93,11 +93,11 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-eigengram-background flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-VitalCarePlatform-background flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gradient">Eigengram</h1>
-          <p className="text-eigengram-muted mt-2">Healthcare AI Platform</p>
+          <h1 className="text-3xl font-bold text-gradient">VitalCarePlatform</h1>
+          <p className="text-VitalCarePlatform-muted mt-2">Healthcare AI Platform</p>
         </div>
         
         <Card>
@@ -129,7 +129,7 @@ const SignIn = () => {
                   <Label htmlFor="password">Password</Label>
                   <Link 
                     to="/forgot-password" 
-                    className="text-sm text-eigengram-primary hover:underline"
+                    className="text-sm text-VitalCarePlatform-primary hover:underline"
                   >
                     Forgot password?
                   </Link>
@@ -176,7 +176,7 @@ const SignIn = () => {
                 Don't have an account?{" "}
                 <Link 
                   to="/sign-up" 
-                  className="text-eigengram-primary hover:underline"
+                  className="text-VitalCarePlatform-primary hover:underline"
                 >
                   Sign up
                 </Link>

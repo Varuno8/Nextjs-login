@@ -1,7 +1,12 @@
-
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { servicesApi, subscriptionsApi } from "@/services/api";
 import ServiceGrid from "@/components/ServiceGrid";
@@ -20,10 +25,16 @@ const Dashboard = () => {
         setIsLoading(true);
         if (user?.id) {
           // Check if user ID is a valid UUID format
-          if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(user.id)) {
+          if (
+            !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+              user.id
+            )
+          ) {
             console.error("Invalid UUID format for user ID:", user.id);
-            toast.error("Invalid user ID format. Please try signing out and back in.");
-            
+            toast.error(
+              "Invalid user ID format. Please try signing out and back in."
+            );
+
             // Still fetch general services even if user ID is invalid
             const servicesResponse = await servicesApi.getAll();
             if (servicesResponse.success) {
@@ -32,23 +43,29 @@ const Dashboard = () => {
             setIsLoading(false);
             return;
           }
-          
+
           const [servicesResponse, subscriptionsResponse] = await Promise.all([
             servicesApi.getAll(),
-            subscriptionsApi.getUserSubscriptions(user.id)
+            subscriptionsApi.getUserSubscriptions(user.id),
           ]);
-          
+
           if (servicesResponse.success) {
             setServices(servicesResponse.data);
           } else {
-            console.error("Failed to fetch services:", servicesResponse.message);
+            console.error(
+              "Failed to fetch services:",
+              servicesResponse.message
+            );
             toast.error("Failed to load available services");
           }
-          
+
           if (subscriptionsResponse.success) {
             setSubscriptions(subscriptionsResponse.data);
           } else {
-            console.error("Failed to fetch subscriptions:", subscriptionsResponse.message);
+            console.error(
+              "Failed to fetch subscriptions:",
+              subscriptionsResponse.message
+            );
             toast.error("Failed to load your subscriptions");
           }
         } else {
@@ -65,7 +82,7 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchData();
   }, [user?.id]);
 
@@ -73,16 +90,18 @@ const Dashboard = () => {
     acc[subscription.serviceId] = subscription.status === "ACTIVE";
     return acc;
   }, {} as Record<string, boolean>);
-  
-  const subscribedServices = services.filter(service => 
-    subscriptionStatus[service.id]
+
+  const subscribedServices = services.filter(
+    (service) => subscriptionStatus[service.id]
   );
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Welcome, {user?.name || user?.username}</h1>
-        <p className="text-eigengram-muted mt-1">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Welcome, {user?.name || user?.username}
+        </h1>
+        <p className="text-VitalCarePlatform-muted mt-1">
           Access and manage your healthcare AI services
         </p>
       </div>
@@ -94,29 +113,27 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">
-              {subscriptions.filter(sub => sub.status === "ACTIVE").length}
+              {subscriptions.filter((sub) => sub.status === "ACTIVE").length}
             </p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle>Available Services</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">
-              {services.length}
-            </p>
+            <p className="text-3xl font-bold">{services.length}</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle>Pending Requests</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">
-              {subscriptions.filter(sub => sub.status === "PENDING").length}
+              {subscriptions.filter((sub) => sub.status === "PENDING").length}
             </p>
           </CardContent>
         </Card>
@@ -127,12 +144,14 @@ const Dashboard = () => {
           <TabsTrigger value="subscribed">My Subscriptions</TabsTrigger>
           <TabsTrigger value="available">Available Services</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="subscribed" className="mt-0">
           {isLoading ? (
-            <div className="text-center py-12">Loading your subscriptions...</div>
+            <div className="text-center py-12">
+              Loading your subscriptions...
+            </div>
           ) : (
-            <ServiceGrid 
+            <ServiceGrid
               services={subscribedServices}
               subscriptionStatus={subscriptionStatus}
               dashboard={true}
@@ -140,12 +159,14 @@ const Dashboard = () => {
             />
           )}
         </TabsContent>
-        
+
         <TabsContent value="available" className="mt-0">
           {isLoading ? (
-            <div className="text-center py-12">Loading available services...</div>
+            <div className="text-center py-12">
+              Loading available services...
+            </div>
           ) : (
-            <ServiceGrid 
+            <ServiceGrid
               services={services}
               subscriptionStatus={subscriptionStatus}
               dashboard={true}

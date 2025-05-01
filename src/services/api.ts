@@ -28,7 +28,7 @@ const authService = {
 
       // Store the session token in localStorage
       if (data.session) {
-        localStorage.setItem('eigengramAccessToken', data.session.access_token);
+        localStorage.setItem('VitalCarePlatformAccessToken', data.session.access_token);
         console.log('Token stored successfully');
       } else {
         console.error('No session data returned from login');
@@ -187,7 +187,7 @@ const authService = {
   logout: async () => {
     try {
       await supabase.auth.signOut();
-      localStorage.removeItem('eigengramAccessToken');
+      localStorage.removeItem('VitalCarePlatformAccessToken');
       return { success: true };
     } catch (error) {
       console.error('Logout error:', error);

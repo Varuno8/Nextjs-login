@@ -63,7 +63,7 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
         },
-        eigengram: {
+        VitalCarePlatform: {
           primary: '#3b82f6',
           secondary: '#60a5fa',
           accent: '#0ea5e9',

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -39,7 +38,7 @@ const Account = () => {
 
   const onSubmit = async (values: AccountFormValues) => {
     setIsLoading(true);
-    
+
     try {
       updateUser(values);
       toast.success("Account updated successfully");
@@ -55,7 +54,7 @@ const Account = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
-        <p className="text-eigengram-muted mt-1">
+        <p className="text-VitalCarePlatform-muted mt-1">
           Manage your account settings and preferences
         </p>
       </div>
@@ -80,19 +79,19 @@ const Account = () => {
                   </FormItem>
                 )}
               />
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input 
-                      value={user?.email || ""} 
-                      disabled 
-                      placeholder="Your email" 
+                    <Input
+                      value={user?.email || ""}
+                      disabled
+                      placeholder="Your email"
                     />
                   </FormControl>
                 </FormItem>
-                
+
                 <FormField
                   control={form.control}
                   name="phoneNumber"
@@ -107,10 +106,10 @@ const Account = () => {
                   )}
                 />
               </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full md:w-auto" 
+
+              <Button
+                type="submit"
+                className="w-full md:w-auto"
                 disabled={isLoading}
               >
                 {isLoading ? "Saving..." : "Save Changes"}

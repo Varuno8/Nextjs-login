@@ -1,5 +1,5 @@
 
-# Eigengram Healthcare Platform
+# VitalCarePlatform Healthcare Platform
 
 A comprehensive healthcare AI service marketplace where users can discover, subscribe to, and access specialized healthcare AI models. Built with React.js frontend and Django REST framework backend.
 
